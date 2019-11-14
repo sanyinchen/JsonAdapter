@@ -1,2 +1,3 @@
 rootProject.name = 'JsonAdapter'
-
+include ':lib'
+include ':samples'

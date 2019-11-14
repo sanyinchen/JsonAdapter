@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.kotlin.jvm' version '1.3.21'
+    id 'org.jetbrains.kotlin.jvm' 
 }
 
 group 'lib'
@@ -15,6 +15,8 @@ repositories {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    api("com.squareup.moshi:moshi-kotlin:1.9.1")
+    api 'com.google.code.gson:gson:2.8.6'
 }
 
 compileKotlin {
