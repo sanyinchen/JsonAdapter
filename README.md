@@ -1,6 +1,6 @@
 # JsonAdapter
 
-A simple lib fo enhance moshi json parse .
+A simple lib for enhancing moshi json parse .
 
 When you parse fail by some unknown exception , it will auto down to parse by Gson .
 
