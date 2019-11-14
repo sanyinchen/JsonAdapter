@@ -26,3 +26,53 @@ fun main() {
 }
 
 ```
+
+### CORE CODE SCOPE
+
+```
+fun <T> fromJson(
+        content: String,
+        classz: Class<T>,
+        parserAdapter: Any? = null,
+        ignoreException: Boolean = true
+    ): T? {
+
+        val moshiBuild = Moshi.Builder()
+        moshiBuild.add(KotlinJsonAdapterFactory())
+        if (parserAdapter != null) {
+            moshiBuild.add(parserAdapter)
+        }
+
+        val parserChain = mutableListOf<FunctionWrap<T>>()
+
+        parserChain.add { next ->
+            {
+                try {
+                    val jsonAdapter = moshiBuild.build().adapter<T>(classz)
+                    jsonAdapter.fromJson(content)
+                } catch (ex: Exception) {
+                    if (!ignoreException) {
+                        ex.printStackTrace()
+                    }
+                    null
+                } ?: next(it)
+            }
+
+        }
+
+        return parserChain.asReversed().fold(
+            { str: String ->
+                try {
+                    Gson().fromJson<T>(str, classz)
+                } catch (ex: Exception) {
+                    if (!ignoreException) {
+                        ex.printStackTrace()
+                    }
+                    null
+                }
+            }, { next, functionWrap ->
+                functionWrap(next)
+            })(content)
+    }
+    
+```
